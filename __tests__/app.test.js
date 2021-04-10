@@ -23,5 +23,29 @@ describe('ripe-banana routes', () => {
         .then((res) => {
           expect(res.body).toEqual([{id: 1, name: 'MGM'}]);
         })
-      }) 
+      })
+
+      it('GETS a studio by ID', async () => {
+        await Studio.create({
+          id: 1,
+          name: 'MGM',
+          city: 'Los Angeles',
+          state: 'CA',
+          country: 'US',
+        });
+        
+        return request(app)
+        .get('/api/v1/studios/1')
+        .then((res) => {
+          expect(res.body).toEqual({
+          id: 1,
+          name: 'MGM',
+          city: 'Los Angeles',
+          state: 'CA',
+          country: 'US',
+          });
+        });
+      });
+
+      
   });
