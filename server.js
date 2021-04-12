@@ -1,3 +1,4 @@
+require('./lib/model/associations');
 const app = require('./lib/app');
 // const sequelize = require('./lib/utils/sequelize');
 
