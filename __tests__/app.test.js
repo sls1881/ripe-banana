@@ -17,7 +17,6 @@ describe('ripe-banana routes', () => {
 
   beforeEach( async () => {
     await Studio.create({
-      id: 1,
       name: 'MGM',
       city: 'Los Angeles',
       state: 'CA',
@@ -25,6 +24,11 @@ describe('ripe-banana routes', () => {
     });
     await Actor.create({
       name: 'Will Smith'
+    })
+    await Film.create({
+      StudioId: 1,
+      title: 'Batman',
+      released: 1967,
     })
   })
 
@@ -40,16 +44,8 @@ describe('ripe-banana routes', () => {
         })
       })
 
-  it.skip('GETS a studio by ID', async () => {
-        await Studio.create({
-          id: 1,
-          name: 'MGM',
-          city: 'Los Angeles',
-          state: 'CA',
-          country: 'US',
-        });
-        
-        return request(app)
+  it.skip('GETS a studio by ID', () => {
+       return request(app)
         .get('/api/v1/studios/1')
         .then((res) => {
           expect(res.body).toEqual({
@@ -61,10 +57,18 @@ describe('ripe-banana routes', () => {
           });
         });
       });
-
       
       // FILMS
-      it.skip('should get all film', async () => {
+      it('should get all films', async () => {
+        return request(app)
+        .get('/api/v1/films')
+        .then((res) => {
+          expect(res.body).toEqual([{id: 1, title: 'Batman', released: 1967, Studio: {id: 1, name: 'MGM'}
+          }]);
+        })
+      })
+
+      it.skip('should get a film by ID', async () => {
         await Film.create({
               title: 'Batman',
               studioId: 1,
@@ -92,9 +96,6 @@ describe('ripe-banana routes', () => {
               }]);
             })
           })
-
-
-
       
       it('should get actor name and is', async () => {
        
