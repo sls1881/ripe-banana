@@ -40,14 +40,7 @@ describe('ripe-banana routes', () => {
         })
       })
 
-  it.skip('GETS a studio by ID', async () => {
-        await Studio.create({
-          id: 1,
-          name: 'MGM',
-          city: 'Los Angeles',
-          state: 'CA',
-          country: 'US',
-        });
+  it('GETS a studio by ID', () => {
         
         return request(app)
         .get('/api/v1/studios/1')
