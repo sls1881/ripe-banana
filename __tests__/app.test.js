@@ -13,11 +13,8 @@ describe('ripe-banana routes', () => {
     return db.sync({ force: true });
   });
 
-
-
   beforeEach( async () => {
     await Studio.create({
-      id: 1,
       name: 'MGM',
       city: 'Los Angeles',
       state: 'CA',
@@ -26,8 +23,13 @@ describe('ripe-banana routes', () => {
     await Actor.create({
       name: 'Will Smith'
     })
+    await Film.create({
+      ActorId: 2,
+      StudioId: 1,
+      title: 'Batman',
+      released: 1967,
+    })
   })
-
 
   //Studio
   it('should get a studio', () => {
@@ -40,16 +42,8 @@ describe('ripe-banana routes', () => {
         })
       })
 
-  it.skip('GETS a studio by ID', async () => {
-        await Studio.create({
-          id: 1,
-          name: 'MGM',
-          city: 'Los Angeles',
-          state: 'CA',
-          country: 'US',
-        });
-        
-        return request(app)
+  it.skip('GETS a studio by ID', () => {
+       return request(app)
         .get('/api/v1/studios/1')
         .then((res) => {
           expect(res.body).toEqual({
@@ -61,10 +55,18 @@ describe('ripe-banana routes', () => {
           });
         });
       });
-
       
       // FILMS
-      it.skip('should get all film', async () => {
+      it('should get all films', async () => {
+        return request(app)
+        .get('/api/v1/films')
+        .then((res) => {
+          expect(res.body).toEqual([{id: 1, title: 'Batman', released: 1967, Studio: {id: 1, name: 'MGM'}
+          }]);
+        })
+      })
+
+      it('should get a film by ID', async () => {
         await Film.create({
               title: 'Batman',
               studioId: 1,
@@ -78,12 +80,12 @@ describe('ripe-banana routes', () => {
             });
           
       return request(app)
-            .get('/api/v1/films')
+            .get('/api/v1/films/1')
             .then((res) => {
               expect(res.body).toEqual([{
                 id: 1,
                 title: 'Batman',
-                studio: 1,
+                Studio: 1,
                 released: 1967,
                 cast: [{
                   id: 2,
@@ -92,9 +94,6 @@ describe('ripe-banana routes', () => {
               }]);
             })
           })
-
-
-
       
       it('should get actor name and is', async () => {
        
