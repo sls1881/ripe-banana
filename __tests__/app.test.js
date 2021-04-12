@@ -3,6 +3,7 @@ const setup = require('../data/setup');
 const request = require('supertest');
 const app = require('../lib/app');
 const Studio = require('../lib/model/Studio');
+const Film = require('../lib/model/Film');
 
 describe('ripe-banana routes', () => {
   beforeEach(() => {
@@ -25,7 +26,7 @@ describe('ripe-banana routes', () => {
         })
       })
 
-      it('GETS a studio by ID', async () => {
+  it.skip('GETS a studio by ID', async () => {
         await Studio.create({
           id: 1,
           name: 'MGM',
@@ -47,5 +48,32 @@ describe('ripe-banana routes', () => {
         });
       });
 
+      
+      // FILMS
+      it('should get all film', async() => {
+        await Film.create({
+              title: 'Batman',
+              studio: 1,
+              released: 1967,
+              cast: [{
+                role: 'Batman',
+                actor: 1
+              }]
+            });
+              
+      return request(app)
+            .get('/api/v1/films')
+            .then((res) => {
+              expect(res.body).toEqual({
+                title: 'Batman',
+                studio: 1,
+                released: 1967,
+                cast: [{
+                  role: 'Batman',
+                  actor: 1
+                }]
+              });
+              })
+            })
       
   });
