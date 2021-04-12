@@ -40,7 +40,7 @@ describe('ripe-banana routes', () => {
         })
       })
 
-  it('GETS a studio by ID', () => {
+  it.skip('GETS a studio by ID', () => {
         
         return request(app)
         .get('/api/v1/studios/1')
@@ -57,7 +57,7 @@ describe('ripe-banana routes', () => {
 
       
       // FILMS
-      it.skip('should get all film', async () => {
+      it('should get all film', async () => {
         await Film.create({
               title: 'Batman',
               studioId: 1,
