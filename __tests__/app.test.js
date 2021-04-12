@@ -19,6 +19,7 @@ describe('ripe-banana routes', () => {
       city: 'Los Angeles',
       state: 'CA',
       country: 'US',
+      FilmId: 2
     });
     await Actor.create({
       name: 'Will Smith'
@@ -32,6 +33,28 @@ describe('ripe-banana routes', () => {
   })
 
   //Studio
+
+  it('it should create a studio using post', () => {
+    return request(app)
+    .post('/api/v1/studios')
+    .send({
+      name: 'Alchemy Productions',
+      city: 'Portland',
+      state: 'OR',
+      country: 'USA'
+    })
+    .then((res) => {
+      expect(res.body).toEqual({
+        id: 2,
+        name: 'Alchemy Productions',
+        city: 'Portland',
+        state: 'OR',
+        country: 'USA'
+
+      })
+    })
+  })
+
   it('should get a studio', () => {
   
 
@@ -42,7 +65,7 @@ describe('ripe-banana routes', () => {
         })
       })
 
-  it.skip('GETS a studio by ID', () => {
+  it('GETS a studio by ID', () => {
        return request(app)
         .get('/api/v1/studios/1')
         .then((res) => {
@@ -52,11 +75,31 @@ describe('ripe-banana routes', () => {
           city: 'Los Angeles',
           state: 'CA',
           country: 'US',
+          Films: [{
+            id: 1,
+            title: 'Batman'
+          }]
           });
         });
       });
       
       // FILMS
+      it.skip('should create a film using post', () => {
+        return request(app)
+        .post('/api/v1/films')
+        .send({
+          title: 'We Love Sequelize!',
+          released: 2021
+        })
+        .then((res) => {
+          expect(res.body).toEqual({
+            id: 3,
+            title: 'We Love Sequelize!',
+            released: 2021
+          })
+        })
+      })
+
       it('should get all films', async () => {
         return request(app)
         .get('/api/v1/films')
@@ -69,7 +112,7 @@ describe('ripe-banana routes', () => {
       it('should get a film by ID', async () => {
         await Film.create({
               title: 'Batman',
-              studioId: 1,
+              StudioId: 1,
               released: 1967,
               cast: [{id: 2, name: 'Will Smith'}]
             }, {
@@ -80,18 +123,18 @@ describe('ripe-banana routes', () => {
             });
           
       return request(app)
-            .get('/api/v1/films/1')
+            .get('/api/v1/films/2')
             .then((res) => {
-              expect(res.body).toEqual([{
-                id: 1,
+              expect(res.body).toEqual({
+                id: 2,
                 title: 'Batman',
-                Studio: 1,
+                Studio: {id: 1, name: 'MGM'},
                 released: 1967,
                 cast: [{
                   id: 2,
                   name: 'Will Smith'
                 }]
-              }]);
+              });
             })
           })
       
